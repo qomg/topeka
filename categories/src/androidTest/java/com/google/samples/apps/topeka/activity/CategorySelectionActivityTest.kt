@@ -61,7 +61,8 @@ class CategorySelectionActivityTest {
 
         override fun beforeActivityLaunched() {
             login = TestLogin
-            with(InstrumentationRegistry.getTargetContext()) {
+            val context = InstrumentationRegistry.getInstrumentation().targetContext
+            with(context) {
                 logout()
                 // Circumventing SmartLock loginPlayer at this point.
                 storePlayerLocally(Player("Zaphod", "B", Avatar.FIVE))
@@ -72,7 +73,7 @@ class CategorySelectionActivityTest {
     }
 
     @Before fun loadCategories() {
-        targetContext = InstrumentationRegistry.getTargetContext()
+        val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
         categories = targetContext.database().getCategories()
     }
 

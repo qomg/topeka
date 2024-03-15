@@ -70,10 +70,10 @@ class CategorySelectionFragment : Fragment(R.layout.fragment_categories) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CATEGORY &&
-                resultCode == com.google.samples.apps.topeka.base.R.id.solved &&
-                data != null) {
-            adapter?.notifyItemChanged(data.getStringExtra(JsonAttributes.ID))
+        if (requestCode == REQUEST_CATEGORY
+            && resultCode == com.google.samples.apps.topeka.base.R.id.solved
+            && data != null) {
+            adapter?.notifyItemChanged(data.getStringExtra(JsonAttributes.ID) ?: "")
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

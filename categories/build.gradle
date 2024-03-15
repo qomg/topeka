@@ -22,24 +22,34 @@ android {
 
     defaultConfig {
         minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
+    packagingOptions {
+        resources {
+            pickFirsts += ['LICENSE.txt', 'protobuf.meta']
         }
     }
 
-    packagingOptions {
-        pickFirst 'LICENSE.txt'
-        pickFirst 'protobuf.meta'
-    }
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.debug
+//        }
+//    }
+
 
     flavorDimensions 'delivery'
+    namespace 'com.google.samples.apps.topeka.categories'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    kotlin {
+        jvmToolchain(8)
+    }
 
 }
 

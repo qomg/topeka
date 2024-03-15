@@ -38,18 +38,20 @@ fun Activity.requestLogin(success: (Player) -> Unit) {
         return
     }
     credentialsApiClient()
-            .request(CredentialRequest.Builder()
-                    .setPasswordLoginSupported(true)
-                    .build())
-            .addOnCompleteListener {
-                if (it.isSuccessful && it.result != null) {
-                    val player = Player(it.result!!.credential)
-                    storePlayerLocally(player)
-                    success(player)
-                } else {
-                    resolveException(it.exception, REQUEST_LOGIN)
-                }
+        .request(
+            CredentialRequest.Builder()
+                .setPasswordLoginSupported(true)
+                .build()
+        )
+        .addOnCompleteListener {
+            if (it.isSuccessful && it.result != null) {
+                val player = Player(it.result!!.credential)
+                storePlayerLocally(player)
+                success(player)
+            } else {
+                resolveException(it.exception, REQUEST_LOGIN)
             }
+        }
 }
 
 /**
@@ -58,14 +60,14 @@ fun Activity.requestLogin(success: (Player) -> Unit) {
 fun Activity.saveLogin(player: Player, success: () -> Unit) {
     storePlayerLocally(player)
     credentialsApiClient()
-            .save(player.toCredential())
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    success()
-                } else {
-                    resolveException(it.exception, REQUEST_SAVE)
-                }
+        .save(player.toCredential())
+        .addOnCompleteListener {
+            if (it.isSuccessful) {
+                success()
+            } else {
+                resolveException(it.exception, REQUEST_SAVE)
             }
+        }
 }
 
 /**
@@ -87,33 +89,33 @@ private fun Activity.resolveException(exception: Exception?, requestCode: Int) {
  * Hook this into onActivityResult for maximum benefit.
  */
 fun Activity.onSmartLockResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?,
-        success: (Player) -> Unit,
-        failure: () -> Unit) {
+    requestCode: Int,
+    resultCode: Int,
+    data: Intent?,
+    success: (Player) -> Unit,
+    failure: () -> Unit
+) {
     if (resultCode != Activity.RESULT_OK) {
         return
     }
     when (requestCode) {
         REQUEST_LOGIN -> {
-            data?.run {
-                if (hasExtra(Credential.EXTRA_KEY)) {
-                    val player = Player(getParcelableExtra(Credential.EXTRA_KEY)).also {
-                        storePlayerLocally(it)
-                    }
-                    success(player)
-                } else {
-                    failure()
-                }
-            }
+            data?.takeIf {
+                it.hasExtra(Credential.EXTRA_KEY)
+            }?.getParcelableExtra<Credential>(Credential.EXTRA_KEY)?.let {
+                Player(it)
+            }?.also {
+                storePlayerLocally(it)
+                success(it)
+            } ?: failure()
         }
+
         REQUEST_SAVE -> (Log.d(TAG, "savePlayer result"))
     }
 }
 
 private fun Context.credentialsApiClient() =
-        Credentials.getClient(this, CredentialsOptions.Builder().forceEnableSaveDialog().build())
+    Credentials.getClient(this, CredentialsOptions.Builder().forceEnableSaveDialog().build())
 
 fun Context.logout() {
     editPlayer().clear().commit()
@@ -132,16 +134,18 @@ fun Context.isLoggedIn(): Boolean {
 private fun Context.editPlayer() = getPlayerPreferences().edit()
 
 private fun Context.getPlayerPreferences() =
-        getSharedPreferences(PLAYER_PREFERENCES, Context.MODE_PRIVATE)
+    getSharedPreferences(PLAYER_PREFERENCES, Context.MODE_PRIVATE)
 
 @VisibleForTesting
 fun Context.getPlayer(): Player? {
     return with(getPlayerPreferences()) {
-        val player = Player(getString(PREFERENCE_FIRST_NAME, null),
-                getString(PREFERENCE_LAST_INITIAL, null),
-                getString(PREFERENCE_AVATAR, null)
-                        ?.let { Avatar.valueOf(it) },
-                getString(PREFERENCE_EMAIL, ""))
+        val player = Player(
+            getString(PREFERENCE_FIRST_NAME, null),
+            getString(PREFERENCE_LAST_INITIAL, null),
+            getString(PREFERENCE_AVATAR, null)
+                ?.let { Avatar.valueOf(it) },
+            getString(PREFERENCE_EMAIL, "")
+        )
         if (player.valid()) {
             player
         } else {
@@ -155,11 +159,11 @@ fun Context.storePlayerLocally(player: Player) {
     with(player) {
         if (valid())
             editPlayer()
-                    .putString(PREFERENCE_FIRST_NAME, firstName)
-                    .putString(PREFERENCE_LAST_INITIAL, lastInitial)
-                    .putString(PREFERENCE_AVATAR, avatar?.name)
-                    .putString(PREFERENCE_EMAIL, email)
-                    .apply()
+                .putString(PREFERENCE_FIRST_NAME, firstName)
+                .putString(PREFERENCE_LAST_INITIAL, lastInitial)
+                .putString(PREFERENCE_AVATAR, avatar?.name)
+                .putString(PREFERENCE_EMAIL, email)
+                .apply()
     }
 }
 

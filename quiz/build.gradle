@@ -22,23 +22,32 @@ android {
 
     defaultConfig {
         minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
+    packagingOptions {
+        resources {
+            merges += ['LICENSE.txt', 'protobuf.meta']
         }
     }
 
-    packagingOptions {
-        merge 'LICENSE.txt'
-        merge 'protobuf.meta'
-    }
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.debug
+//        }
+//    }
 
+    namespace 'com.google.samples.apps.topeka.quiz'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    kotlin {
+        jvmToolchain(8)
+    }
 }
 
 dependencies {

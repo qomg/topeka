@@ -33,6 +33,7 @@ android {
     }
 
     dynamicFeatures = [":categories", ":quiz"]
+    namespace 'com.google.samples.apps.topeka'
 }
 
 dependencies {

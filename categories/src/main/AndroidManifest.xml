@@ -15,23 +15,26 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:dist="http://schemas.android.com/apk/distribution"
-          package="com.google.samples.apps.topeka.categories">
+    xmlns:dist="http://schemas.android.com/apk/distribution">
+
     <dist:module dist:instant="true">
         <dist:fusing dist:include="true" />
         <dist:delivery>
-            <dist:install-time/>
+            <dist:install-time />
         </dist:delivery>
     </dist:module>
 
     <application>
 
-        <activity android:name="com.google.samples.apps.topeka.activity.CategorySelectionActivity"
-                  android:theme="@style/Topeka.CategorySelectionActivity">
+        <activity
+            android:name="com.google.samples.apps.topeka.activity.CategorySelectionActivity"
+            android:exported="true"
+            android:theme="@style/Topeka.CategorySelectionActivity">
 
             <intent-filter android:autoVerify="true">
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <data android:scheme="http" />

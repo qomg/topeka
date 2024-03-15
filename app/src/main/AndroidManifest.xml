@@ -16,8 +16,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.samples.apps.topeka">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <dist:module dist:instant="true">
         <dist:fusing dist:include="true" />
@@ -26,7 +25,8 @@
         </dist:delivery>
     </dist:module>
 
-    <application android:allowBackup="false"
+    <application
+        android:allowBackup="false"
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -35,7 +35,9 @@
         android:theme="@style/Topeka"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
-        <activity android:name="com.google.samples.apps.topeka.activity.SignInActivity"
+        <activity
+            android:name="com.google.samples.apps.topeka.activity.SignInActivity"
+            android:exported="true"
             android:theme="@style/Topeka.SignInActivity"
             android:windowSoftInputMode="adjustPan">
 
@@ -48,6 +50,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <data android:scheme="http" />
@@ -56,7 +59,8 @@
                 <data android:path="/signin" />
             </intent-filter>
 
-            <meta-data android:name="default-url"
+            <meta-data
+                android:name="default-url"
                 android:value="https://topeka.instantappsample.com/signin" />
         </activity>
     </application>

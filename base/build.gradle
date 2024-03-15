@@ -23,14 +23,24 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdk
         targetSdkVersion rootProject.targetSdk
-        versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+    namespace 'com.google.samples.apps.topeka.base'
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.debug
+//        }
+//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    kotlin {
+        jvmToolchain(8)
     }
 
 }
